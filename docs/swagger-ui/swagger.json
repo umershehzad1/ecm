@@ -1,0 +1,575 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "ECM",
+    "description": "Api documentation for ECM",
+    "termsOfService": "terms",
+    "contact": {
+      "name": "Umer Abbas",
+      "url": "umerabbas@gamestruct.io",
+      "email": "umerabbas@gamestruct.io"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "",
+  "basePath": "/api/v1",
+  "paths": {
+    "/user/signup": {
+      "post": {
+        "summary": "Signup",
+        "description": "This service can register a new user",
+        "operationId": "user-signup",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Pass the object with fullName, email, password",
+            "schema": {
+              "type": "object",
+              "required": [
+                "fullName",
+                "email",
+                "password"
+              ],
+              "properties": {
+                "fullName": {
+                  "type": "string",
+                  "example": "Umer Abbas"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "umerabbas@gamestruct.io"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "CHmod512"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/successUser"
+            }
+          },
+          "400": {
+            "description": "Validation Error"
+          },
+          "409": {
+            "description": "User Already Exist!"
+          },
+          "500": {
+            "description": "Internal Server Error!"
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "summary": "Login",
+        "description": "This server helps user to login",
+        "operationId": "user-signin",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Path the object with email & password",
+            "schema": {
+              "type": "object",
+              "required": [
+                "email",
+                "password"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "umerabbas@gamestruct.io"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "CHmod512"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/successUser"
+            }
+          },
+          "400": {
+            "description": "Validation Error"
+          },
+          "401": {
+            "description": "Invalid Password"
+          },
+          "404": {
+            "description": "User Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user/": {
+      "get": {
+        "summary": "My Profile",
+        "description": "This service returns the user profile",
+        "operationId": "user-me",
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Connection Unautherized!"
+          },
+          "404": {
+            "description": "Token Not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Profile",
+        "description": "This server helps user to update his/her profile",
+        "operationId": "user-edit",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Path the object with fullName, image, address, phone",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fullName": {
+                  "type": "string",
+                  "example": "fullName"
+                },
+                "image": {
+                  "type": "string",
+                  "example": "http://localhost:3000/public/upload/default.png"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "address"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "090078601"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "400": {
+            "description": "Validation Error"
+          },
+          "401": {
+            "description": "Connection Unautherized!"
+          },
+          "404": {
+            "description": "Token Not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user/forget-password": {
+      "post": {
+        "summary": "Forget Password",
+        "description": "Forget password service sends user new password",
+        "operationId": "user-forget-password",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Path the object with email",
+            "schema": {
+              "type": "object",
+              "required": [
+                "email"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "umerabbas@gamestruct.io"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "400": {
+            "description": "Validation Error"
+          },
+          "404": {
+            "description": "User Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/upload/": {
+      "post": {
+        "summary": "Upload",
+        "description": "This service upload the attachment and return the reponse. File limit (2MB)",
+        "operationId": "upload",
+        "tags": [
+          "Upload"
+        ],
+        "parameters": [
+          {
+            "name": "attachment",
+            "in": "formData",
+            "description": "Upload attachment through form-data",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "Connection Unautherized!"
+          },
+          "404": {
+            "description": "Token Not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/match/": {
+      "get": {
+        "summary": "stats",
+        "description": "This service returns the user stats",
+        "operationId": "stats",
+        "tags": [
+          "Match"
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "Connection Unautherized!"
+          },
+          "404": {
+            "description": "Token Not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/match/{match_id}": {
+      "get": {
+        "summary": "Match Detail",
+        "description": "This service returns the match detail by its Id",
+        "operationId": "match-detail",
+        "tags": [
+          "Match"
+        ],
+        "parameters": [
+          {
+            "name": "match_id",
+            "in": "path",
+            "description": "Enter Match ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "Connection Unautherized!"
+          },
+          "404": {
+            "description": "Token Not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/deck/": {
+      "get": {
+        "summary": "Get All Decks",
+        "description": "This service returns the user's all deck",
+        "operationId": "get-all-deck",
+        "tags": [
+          "Deck"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Connection Unautherized!"
+          },
+          "404": {
+            "description": "Token Not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Deck",
+        "description": "This service can create a new user deck",
+        "operationId": "create-deck",
+        "tags": [
+          "Deck"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Pass the object with array of cards_id",
+            "schema": {
+              "type": "object",
+              "required": [
+                "cards"
+              ],
+              "properties": {
+                "cards": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "ok"
+          },
+          "400": {
+            "description": "Validation Error"
+          },
+          "404": {
+            "description": "Token Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/deck/{deck_id}": {
+      "get": {
+        "summary": "Get Deck",
+        "description": "this service can fetch the single deck",
+        "operationId": "get-deck",
+        "tags": [
+          "Deck"
+        ],
+        "parameters": [
+          {
+            "name": "deck_id",
+            "in": "path",
+            "description": "Enter Deck ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "400": {
+            "description": "Validation Error"
+          },
+          "404": {
+            "description": "Token Not Found || Deck Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Deck",
+        "description": "this service can update the existing user deck",
+        "operationId": "update-deck",
+        "tags": [
+          "Deck"
+        ],
+        "parameters": [
+          {
+            "name": "deck_id",
+            "in": "path",
+            "description": "Enter Deck ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Pass the deck id into url query param and updated deck into body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "cards"
+              ],
+              "properties": {
+                "cards": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "400": {
+            "description": "Validation Error"
+          },
+          "404": {
+            "description": "Token Not Found || Deck Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Deck",
+        "description": "this service can delete the user deck",
+        "operationId": "delete-deck",
+        "tags": [
+          "Deck"
+        ],
+        "parameters": [
+          {
+            "name": "deck_id",
+            "in": "path",
+            "description": "Enter Deck ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "400": {
+            "description": "Validation Error"
+          },
+          "404": {
+            "description": "Token Not Found || Deck Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "successUser": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "integer",
+              "format": "int64",
+              "example": "5ac9222e4a73822ca4883b4b"
+            },
+            "fullName": {
+              "type": "string",
+              "example": "Umer Abbas"
+            },
+            "email": {
+              "type": "string",
+              "example": "umerabbas@gamestruct.io"
+            },
+            "phone": {
+              "type": "string",
+              "example": "090078601"
+            },
+            "address": {
+              "type": "string",
+              "example": ""
+            },
+            "image": {
+              "type": "string",
+              "example": ""
+            },
+            "level": {
+              "type": "number",
+              "example": 0
+            },
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "user"
+              }
+            },
+            "token": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YWM5MjIyZTRhNzM4MjJjYTQ4ODNiNGIiLCJuYW1lIjoidW1lciIsImVtYWlsIjoic2hhaHphZC5udDFAZ21haWwuY29tIiwicm9sZXMiOlsidXNlciJdLCJsb2NhdGlvbiI6eyJjb29yZGluYXRlcyI6eyJsbmciOiItODQuMzc4OSIsImxhdCI6IjMzLjc0ODkifSwiY291bnRyeSI6IlVuaXRlZCBTdGF0ZXMiLCJjaXR5IjoiQXRsYW50YSJ9LCJhdmF0YXIiOiIiLCJpYXQiOjE1MjMxMzA5MjZ9.OYfNI7A-EFjQXjXGtgNiIsx388-41LSCPsrrBh2oEUQ"
+            }
+          }
+        }
+      }
+    }
+  }
+}
